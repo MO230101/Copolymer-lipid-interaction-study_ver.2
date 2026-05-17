@@ -7,11 +7,12 @@ This repository contains the analysis scripts, machine learning workflows, and f
 The workflows integrate:
 - Time-domain NMR (TD-NMR)
 - Inverse Laplace Transform (ILT) analysis
-- ROI-based solution NMR analysis
-- Language representation construction
+- ROI-resolved solution NMR analysis
+- Meso-structure descriptor construction
+- Language representation generation
+- Concept-preserving preprocessing
 - Bayesian Optimization (BO)
 - BLOX-based novelty exploration
-- Meso-structure descriptor generation
 
 ---
 
@@ -38,6 +39,7 @@ The workflows integrate:
 
 /Figure5/
     Language representation generation
+    Concept-preserving preprocessing
     BO/BLOX exploration
     Occupied fraction analysis
     Token attribution analysis
@@ -46,7 +48,7 @@ The workflows integrate:
     Example datasets
 
 /source_data/
-    Source data used for manuscript figures
+    Source data corresponding to manuscript figures
 
 /supplementary/
     Supplementary figure generation scripts
@@ -104,6 +106,59 @@ captions_long_preprocessed.csv
 
 ---
 
+# Language Representation Workflow
+
+The language-representation workflow consists of sequential preprocessing and exploration stages:
+
+```text
+ROI-resolved NMR features
+        ↓
+Copolymer_change_based_motif_scores.csv
+        ↓
+Copolymer_MI_caption_features.csv
+        ↓
+Copolymer_Captions_optimized_Nplus_labels_MI_features_fixed.csv
+        ↓
+captions_long_preprocessed.csv
+        ↓
+numeric_matrix.csv
+WordToken_features_concept_only.csv
+        ↓
+BO/BLOX exploration analysis
+        ↓
+Occupied fraction analysis
+JSD diversity analysis
+Token attribution analysis
+```
+
+Description of each stage:
+
+```text
+1. Meso-structure and interaction feature generation
+   - ROI-derived motif and interaction descriptors
+   - Interaction profile reconstruction
+
+2. Caption master generation
+   - Construction of N/N+SCMIDP language representations
+   - Wide-format caption master table generation
+
+3. Long-format preprocessing
+   - Conversion into copolymer × variant rows
+   - Tokenization-ready formatting
+
+4. Concept-preserving preprocessing
+   - Separation of numerical and concept-based representations
+   - Removal of explicit numerical leakage
+   - Token feature generation
+
+5. BO/BLOX exploration analysis
+   - Hybrid numerical/language representation construction
+   - Exploration-space analysis
+   - Occupied fraction evaluation
+```
+
+---
+
 # Figure-to-Code Mapping
 
 ## Figure 1
@@ -111,11 +166,13 @@ captions_long_preprocessed.csv
 Conceptual illustration of language-driven polymer exploration.
 
 Scripts:
+
 ```text
 Figure1_concept_generation.ipynb
 ```
 
 Outputs:
+
 ```text
 Fig1.pdf
 ```
@@ -127,11 +184,13 @@ Fig1.pdf
 Experimental and analytical workflow.
 
 Scripts:
+
 ```text
 Figure2_workflow_generation.ipynb
 ```
 
 Outputs:
+
 ```text
 Fig2.pdf
 ```
@@ -143,17 +202,20 @@ Fig2.pdf
 TD-NMR relaxation analysis and ILT characterization.
 
 Scripts:
+
 ```text
 Fig3_TDNMR_ILT.ipynb
 ```
 
 Input files:
+
 ```text
 Addwater_CPMG_T2_Relative_Intensity.csv
 AddD2O_MSE_T2_Relative_Intensity.csv
 ```
 
 Outputs:
+
 ```text
 Fig3a.pdf
 Fig3b.pdf
@@ -168,11 +230,13 @@ Fig3d.pdf
 Solution NMR analysis and meso-structure representation.
 
 Scripts:
+
 ```text
 Fig4_solutionNMR.ipynb
 ```
 
 Input files:
+
 ```text
 zgpg30 spectra
 HSQC spectra
@@ -180,6 +244,7 @@ ROI tables
 ```
 
 Outputs:
+
 ```text
 Fig4a.pdf
 Fig4b.pdf
@@ -196,11 +261,28 @@ Fig4f.pdf
 Language-based exploration and occupied fraction analysis.
 
 Scripts:
+
 ```text
-Fig5_exploration.ipynb
+Fig5_motif_interaction_generation.ipynb
+Fig5_language_representation_generation.ipynb
+Fig5_longformat_preprocessing.ipynb
+Fig5_concept_preprocessing.ipynb
+Fig5_BO_BLOX_exploration.ipynb
+```
+
+Intermediate outputs:
+
+```text
+Copolymer_change_based_motif_scores.csv
+Copolymer_MI_caption_features.csv
+Copolymer_Captions_optimized_Nplus_labels_MI_features_fixed.csv
+captions_long_preprocessed.csv
+numeric_matrix.csv
+WordToken_features_concept_only.csv
 ```
 
 Outputs:
+
 ```text
 Occupied_fraction.pdf
 JSD_diversity.pdf
@@ -223,12 +305,11 @@ Identical initialization conditions were used across representation types for fa
 # Machine Learning Methods
 
 Machine learning workflows include:
-
 - Gaussian Process Regression (GPR)
 - Bayesian Optimization (BO)
 - BLOX-based novelty exploration
-- PCA-based embedding analysis
-- Hybrid numerical/language representations
+- PCA-based dimensionality reduction
+- Hybrid numerical-language representations
 
 Scikit-learn implementations were used unless otherwise noted.
 
@@ -243,7 +324,8 @@ Typical analyses were performed using:
 
 Typical execution times:
 - TD-NMR preprocessing: several minutes
-- Exploration simulations: <10 min per run
+- ILT analysis: several minutes
+- BO/BLOX exploration: <10 min per run
 
 No GPU acceleration was required.
 
@@ -251,7 +333,7 @@ No GPU acceleration was required.
 
 # Data Availability
 
-Source data underlying the manuscript figures and supplementary figures are provided with this repository or with the published article.
+Source data underlying the manuscript figures and supplementary figures are provided in the `/source_data/` directory or with the published article.
 
 ---
 
@@ -260,8 +342,10 @@ Source data underlying the manuscript figures and supplementary figures are prov
 All custom scripts used for:
 - TD-NMR preprocessing
 - ILT analysis
-- language representation construction
-- meso-structure analysis
+- ROI-resolved NMR analysis
+- meso-structure descriptor construction
+- language representation generation
+- concept-preserving preprocessing
 - BO/BLOX exploration
 - figure generation
 
@@ -288,6 +372,6 @@ Language-Driven Exploration of Soft Polymer Interphases Using Multiscale NMR Rep
 
 # Contact
 
-Corresponding author:Jun kikuchi
+Corresponding author: Jun Kikuchi
 
-Masayuki Okada
+Repository maintainer: Masayuki Okada
